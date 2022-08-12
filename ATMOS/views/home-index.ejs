@@ -23,7 +23,7 @@
                 </h1>
             </div>
             <div class = "quick-access-containers">
-                <div class = "task">
+                <!-- <div class = "task">
                     <div class = "window-title">
                         <h2>My Task</h2>
                     </div>
@@ -41,7 +41,7 @@
                             <%}%> 
                         </ul>                                                
                     </div>
-                </div>
+                </div> -->
                 <div class = "projects">
                     <div class = "window-title">
                         <h2>My Projects</h2>
@@ -54,6 +54,9 @@
                     </div>
                     <div class = "window-list">
                         <ul class="window-list-ul">
+                            <% console.log("Inside home-nre-project") %>
+                            <% console.log(projectList) %>
+
                             <%for(let i=0;i<projectList.length;i++){%>
                                 <li class="window-list-li"><%- include("home-new-project", {projectDetail: projectList[i]}) %> </li>                              
                             <%}%>                            

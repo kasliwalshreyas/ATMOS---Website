@@ -159,12 +159,13 @@ img{
 .container{
     display: grid;
     width: 96%;
-    margin: 0 auto;
+    margin: 0 40px 0 40px;
     gap: 1.8rem;
     grid-template-columns: auto 23rem;
 }
 main{
-    margin-top: 1.4rem;
+    /* margin-top: 1.4rem; */
+    margin: 1.4rem auto 0 auto;
 }
 main .insights{
     display: grid;

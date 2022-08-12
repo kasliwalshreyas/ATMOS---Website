@@ -133,31 +133,47 @@ module.exports.get_add_new_task = (req,res) => {
 module.exports.get_update_task = async (req,res) => {
     
     const sectionDetail = req.body;
+
+    console.log("inside get_update_tsk SectionDetail");
+    console.log(sectionDetail);
     const sectionId = req.params.sectionURLID;
     const sectionID = new ObjectId(sectionId);
-    sectionDetail.taskList[sectionDetail.taskList.length-1].taskCompletion = false;
 
-    
+    let updateSection = await Section.findById({_id: sectionID}).then(
+        async (oldSection) => {
+            console.log("inside get_update_task");
+            console.log(oldSection);
 
-    let section = await Section.findByIdAndUpdate({_id: sectionID},{sectionName: sectionDetail.sectionName, taskList: sectionDetail.taskList},{
-        new: true
-    })
-    .then( async (section) => {
-        const projectURLID = section.projectID;
-        const allSection =  await Section.find({projectURLID})
-        .then((result) => {
-            // console.log(result);
-            const allSectionList = result;
-            res.json({
-                redirect: '/task/' + projectURLID,
-                sectionList: allSectionList                               
-            });
-            console.log("Updated Section");
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    })
+            let len = oldSection.taskList.length;
+
+            oldSection.taskList[sectionDetail.taskNumber] = sectionDetail.taskList[0];
+
+            console.log(oldSection.taskList);
+            let section = await Section.findByIdAndUpdate({_id: sectionID},{sectionName: sectionDetail.sectionName, taskList: oldSection.taskList},{
+                new: true
+            })
+            .then( async (section) => {
+                console.log("update section(inside get_update_task): ");
+                console.log(section);
+                const projectURLID = section.projectID;
+                const allSection =  await Section.find({projectURLID})
+                .then((result) => {
+                    // console.log(result);
+                    const allSectionList = result;
+                    res.json({
+                        redirect: '/task/' + projectURLID,
+                        sectionList: allSectionList                               
+                    });
+                    console.log("Updated Section");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            })
+            .catch((err) => {console.log(err)});
+
+        }
+    )
     .catch((err) => {console.log(err)});
 
 
@@ -227,7 +243,7 @@ module.exports.get_delete_section = async (req,res) => {
 
 
     //return
-    res.redirect("/task/62657eec2816e468319e3006");
+    res.redirect("/task/"+ section.projectID);
 
 }
 

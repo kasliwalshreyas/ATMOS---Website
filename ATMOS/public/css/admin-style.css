@@ -5,9 +5,9 @@
 body{
  background-color: #F7F7FA;
  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
- overflow: hidden;
+ /* overflow: hidden; */
 }
-table{
+#sales{
  width: 100%;
  border-collapse: collapse;
  border-spacing: 0;

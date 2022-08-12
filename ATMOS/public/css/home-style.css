@@ -2,53 +2,11 @@
     margin: 0;
     padding: 0;
 }
-.heading h1 {
-    text-align: center;
-}
-.nav-bar{
-    /* display: flex; */
-}
-.nav-bar-elements{
-    display: inline-block;
-    margin-left: 60px;
-}
-.profile{
-    position: absolute;
-    right: 0;
-    top: 20px;
-    margin-right: 20px;
-
-}
-a {
+a{
+    max-width: 202px;
     text-decoration: none;
     color: black;
 }
-.profile:hover{
-    /* display: inline-block; */
-    float: right;
-    margin-right: 20px;
-
-}
-.nav-bar-elements-list{
-    list-style-type: none;
-}
-.nav-bar-elements-list li{
-    display: inline-block;
-    /* border-bottom: solid; */
-    margin-right: 20px;
-}
-.nav-bar-elements-list li:hover{
-    cursor:pointer;
-    display: inline-block;
-    border-bottom: solid;
-    margin-right: 20px;
-}
-/* .nav-bar-elements-list li:active{
-    display: inline-block;
-    border-bottom: solid;
-    margin-right: 20px;
-} */
-
 
 .main-display{
     padding-top: 100px;

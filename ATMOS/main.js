@@ -12,16 +12,18 @@ const async = require('async');
 
 
 //models
-const Task = require('./models/tasks');
+const Task = require('./models/tasks'); 
 const Project = require('./models/projects');
 const User = require('./models/user');
+const Note = require("./models/notes");
 
 //routes
 const authRoutes = require('./routes/authroutes');
 const projectRoutes = require('./routes/projectroutes');
 const taskRoutes = require('./routes/taskroutes');
 const homeRoutes = require('./routes/homeroutes');
-
+const noteRoutes = require('./routes/notesroutes');
+const adminRoutes = require('./routes/adminroutes');
 //middlewares
 const {requireAuth, checkUser} = require('./middleware/authMiddleware');
 
@@ -63,7 +65,8 @@ app.use(authRoutes);
 app.use(projectRoutes);
 app.use(taskRoutes);
 app.use(homeRoutes);
-
+app.use(noteRoutes);
+app.use(adminRoutes);
 
 app.set("view engine", "ejs");
 
@@ -184,9 +187,9 @@ io.on('connection', (socket) => {
 
 
 
-app.get("/notes", function (req, res) {
-    res.render("notes-index");
-});
+// app.get("/notes", function (req, res) {
+//     res.render("notes-index");
+// });
 
 app.get("/admin", async function (req, res) {
     let task 

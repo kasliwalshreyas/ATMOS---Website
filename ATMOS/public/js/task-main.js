@@ -3,17 +3,8 @@ sectionDetail = {
     'taskList': []
 }
 
-
-
-function getDropdownForSection(sectionNumber,event){
-
-}
-
-
-
-
 async function updateSectionNameData(event){
-    console.log(event);
+    // console.log(event);
     let sectionNumber = event.target.id.split("-")[2];
     let sectionNameInput = event.target.value;
         
@@ -27,17 +18,6 @@ async function updateSectionNameData(event){
     if(response.redirect){
         location.assign(response.redirect);
     }
-
-}
-
-function updateTaskCompletionData(event){
-    sectionNumber = event.target.id.split("-")[1];
-    taskNumber = event.target.id.split("-")[2];
-
-    if(projectList[0].sectionList[sectionNumber].tasks.taskCompletion == "true")
-        projectList[0].sectionList[sectionNumber].tasks.taskCompletion = "false";
-    else if(projectList[0].sectionList[sectionNumber].tasks.taskCompletion == "false")
-        projectList[0].sectionList[sectionNumber].tasks.taskCompletion = "true";
 
 }
 
@@ -68,7 +48,7 @@ function createTaskCard(sectionNumber,taskNumber, sectionDetail){
         <div id = "task-card-${sectionNumber}-${taskNumber}" class = "card ${sectionDetail.taskList[taskNumber]['taskCompletion'] == "true" ? "card-checked" : ""}" onclick = "getModal(${sectionNumber},${taskNumber})">
             <div class = "card-tick-input-add">
                 <div class="round">
-                    <input type="checkbox" ${sectionDetail.taskList[taskNumber]['taskCompletion'] == "true" ? "checked" : ""} onchange = "updateTaskCompletionData(event)" id="checkbox-${sectionNumber}-${taskNumber}">
+                    <input type="checkbox" ${sectionDetail.taskList[taskNumber]['taskCompletion'] == "true" ? "checked" : ""} id="checkbox-${sectionNumber}-${taskNumber}">
                     <label for="checkbox-${sectionNumber}-${taskNumber}"></label>
                 </div>
                 <div class = "card-input-add-div">
@@ -77,8 +57,8 @@ function createTaskCard(sectionNumber,taskNumber, sectionDetail){
                 </div>
             </div>
                 <div class = "card-status-priority">
-                    <p id = "section-${sectionNumber}-card-status-${taskNumber}" class = "card-status">${sectionDetail.taskList[taskNumber].taskStatus}</p>
-                    <p id = "section-${sectionNumber}-card-priority-${taskNumber}" class = "card-priority">${sectionDetail.taskList[taskNumber].taskPriority}</p>
+                    <p id = "section-${sectionNumber}-card-status-${taskNumber}" class = "card-status">${sectionDetail.taskList[taskNumber].taskStatus == 'null' ? " " : sectionDetail.taskList[taskNumber].taskStatus }</p>
+                    <p id = "section-${sectionNumber}-card-priority-${taskNumber}" class = "card-priority">${sectionDetail.taskList[taskNumber].taskPriority == 'null' ? " " : sectionDetail.taskList[taskNumber].taskPriority}</p>
                 </div>
                 <div class = "card-collab-deadline">
                     <img id = "section-${sectionNumber}-card-collab-${taskNumber}" class = "card-collaborators-image" src="data:image/png;base64,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">
@@ -130,7 +110,7 @@ function getCardWindow(sectionNumber,taskNumber, sectionDetail){
                             <td class = "taskinfo-table-data-1">
                                 <select class = "priority-input" name="taskinfo-priority-${sectionNumber}-${taskNumber}" id="taskinfo-priority-${sectionNumber}-${taskNumber}" value = "${sectionDetail.taskList[taskNumber].taskPriority}">
                                    
-                                    <option value = "null">Choose Priority</option>
+                                    <option value = "null" ${sectionDetail.taskList[taskNumber]['taskPriority'] == "null" ? "selected" : ""}>Choose Priority</option>
                                     <option value="High" ${sectionDetail.taskList[taskNumber]['taskPriority'] == "High" ? "selected" : ""}>High</option>
                                     <option value="Medium" ${sectionDetail.taskList[taskNumber]['taskPriority'] == "Medium" ? "selected" : ""}>Medium</option>
                                     <option value="Low" ${sectionDetail.taskList[taskNumber]['taskPriority'] == "Low" ? "selected" : ""}>Low</option>
@@ -141,7 +121,7 @@ function getCardWindow(sectionNumber,taskNumber, sectionDetail){
                             <td class = "taskinfo-table-data-0"><label class = "status-label" for = "taskinfo-status-${sectionNumber}-${taskNumber}">Status</label></td>
                             <td class = "taskinfo-table-data-1">
                                 <select class = "status-input" name="taskinfo-status-${sectionNumber}-${taskNumber}" id="taskinfo-status-${sectionNumber}-${taskNumber}">
-                                    <option value = "Choose Status">Choose Status</option>
+                                    <option value = "null" ${sectionDetail.taskList[taskNumber]['taskStatus'] == "null" ? "selected" : ""}>Choose Status</option>
                                     <option value = "On-Track" ${sectionDetail.taskList[taskNumber]['taskStatus'] == "On-Track" ? "selected" : "" }>On-Track</option>
                                     <option value = "At-Risk" ${sectionDetail.taskList[taskNumber]['taskStatus'] == "At-Risk" ? "selected" : "" }>At-Risk</option>
                                     <option value = "Off-Track" ${sectionDetail.taskList[taskNumber]['taskStatus'] == "Off-Track" ? "selected" : "" }>Off-Track</option>
@@ -198,20 +178,13 @@ span.onclick = function() {
     modal.style.display = "none";
 
 
-    if(callNumber==2){
+    // if(callNumber==2){
         sectionDetail = {
             'sectionName': '',
-            'taskList': [{
-                taskID:'',
-                taskName: '',
-                taskCompletion: false,
-                taskAssingedTo: '',
-                taskPriority: '',
-                taskStatus: '',
-                taskDescription: '',
-            }]
+            'taskNumber': taskNumber,
+            'taskList': []
         }
-    }
+    // }
 
     saveData(sectionNumber,taskNumber, sectionDetail);
 
@@ -248,24 +221,40 @@ async function saveData(sectionNumber,taskNumber, sectionDetail){
     let sectionName = document.getElementById(`taskinfo-sectionName-${sectionNumber}-${taskNumber}`).value; 
     let priority = document.getElementById(`taskinfo-priority-${sectionNumber}-${taskNumber}`).value;
     let status = document.getElementById(`taskinfo-status-${sectionNumber}-${taskNumber}`).value;
-    let description = document.getElementById(`taskinfo-description-${sectionNumber}-${taskNumber}`).value;
-    // let completion = document.getElementById(`checkbox--${sectionNumber}-${taskNumber}`).checked;
+    let description = document.getElementById(`taskinfo-description-${sectionNumber}-${taskNumber}`).value; 
+    let completion = false;
+    if(document.getElementById(`checkbox-${sectionNumber}-${taskNumber}`) != null){
+        completion = document.getElementById(`checkbox-${sectionNumber}-${taskNumber}`).checked;
+    }
+    
+    
 
+    console.log("checking section details");
 
-    console.log(taskName + " " + assignee);
+    console.log(taskName);
+    console.log(assignee);
+    console.log(deadline);
+    console.log(priority);
+    console.log(status);
+    console.log(completion);
+    console.log(sectionDetail);
+    
 
     taskNumber = Number(taskNumber);
 
-      
+    console.log("taskNumber:" + taskNumber);
 
-    sectionDetail.taskList[taskNumber].taskName = taskName;
-    sectionDetail.taskList[taskNumber].taskAssingedTo = assignee;
-    sectionDetail.taskList[taskNumber].taskDeadline = deadline;
     sectionDetail.sectionName = sectionName;
-    sectionDetail.taskList[taskNumber].taskPriority = priority;
-    sectionDetail.taskList[taskNumber].taskStatus = status;
-    sectionDetail.taskList[taskNumber].taskDescription = description;
-    // sectionDetail.taskList[taskNumber].taskCompletion = completion;
+    sectionDetail.taskNumber = taskNumber;
+    sectionDetail.taskList = [{
+        taskName: taskName,
+        taskCompletion: completion,
+        taskAssingedTo: assignee,
+        taskDeadline: deadline,
+        taskPriority: priority,
+        taskStatus: status,
+        taskDescription: description
+    }];
 
     console.log('section Details in save the data');
     console.log(sectionDetail);
@@ -334,6 +323,7 @@ async function addTaskToSection1(sectionid){
             console.log('got result, inside addTaskToSection1');
             console.log(response.sectionDetail);
             const taskNumber = response.sectionDetail.taskList.length;
+            console.log("inside addTaskToSection1:" + taskNumber);
             createNewTask(sectionid,taskNumber,response.sectionDetail);
         }
     }

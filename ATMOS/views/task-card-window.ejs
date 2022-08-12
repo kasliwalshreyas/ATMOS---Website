@@ -1,17 +1,5 @@
 <% let dateFormat = new Date(taskDetails.taskDeadline); %>
-<% let date="00-00-0000"; %>
-<% if((Number(dateFormat.getMonth()) + 1) < 10){ %>
-    <% console.log("0"+String((Number(dateFormat.getMonth()) + 1))); %>
-    <% date = (Number(dateFormat.getYear()) + 1900) + "-" + "0"+(Number(dateFormat.getMonth()) + 1) + "-" + dateFormat.getDate() %>
-<% } %>
-<% if((Number(dateFormat.getMonth()) + 1) >= 10){%>
-    <%console.log("hi")%>
-<% date = (Number(dateFormat.getYear()) + 1900) + "-" + (Number(dateFormat.getMonth()) + 1) + "-" + dateFormat.getDate() %>
-<% } %>
-
-
-<!-- <% console.log('date: ' + date + " " + (Number(dateFormat.getMonth()) + 1)); %> -->
-
+<% let date = dateFormat.toISOString().substring(0,10); %>
 
 
 <div id="<%=sectionNumber%>-<%=taskNumber%>-display-modal" class="modal-task">
@@ -53,7 +41,7 @@
                         <td class = "taskinfo-table-data-0"><label class = "status-label" for = "taskinfo-status-<%=sectionNumber%>-<%=taskNumber%>">Status</label></td>
                         <td class = "taskinfo-table-data-1">
                             <select class = "status-input" name="taskinfo-status-<%=sectionNumber%>-<%=taskNumber%>" id="taskinfo-status-<%=sectionNumber%>-<%=taskNumber%>">
-                                <option value = "Choose Status">Choose Status</option>
+                                <option value = "null">Choose Status</option>
                                 <option value = "On-Track" <%=taskDetails['taskStatus'] == "On-Track" ? "selected" : "" %>>On-Track</option>
                                 <option value = "At-Risk" <%=taskDetails['taskStatus'] == "At-Risk" ? "selected" : "" %>>At-Risk</option>
                                 <option value = "Off-Track" <%=taskDetails['taskStatus'] == "Off-Track" ? "selected" : "" %>>Off-Track</option>

@@ -16,9 +16,35 @@ function getModalOfNote(event) {
     if (event.target == modal) {
       modal.style.display = "none";
       addText(last_char);
+      saveDataToServer(event);
     }
   }
 }
+
+
+async function saveDataToServer(event){
+  const last_char = event.target.id.split("-")[1];
+  console.log(last_char);
+  const title = document.getElementById("txtarea_"+last_char).value;
+  console.log(title);
+  const desc = document.getElementById("txtarea-"+last_char).value;
+  console.log(desc);
+
+  const url = "/notes/"+last_char;
+  const result = await fetch({url},{
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({title,desc})
+  });
+
+  const response = result.JSON();
+  if(response.redirect){
+    location.assign(response.redirect);
+  }
+
+}
+
+
 
 
 var count_bold = 0, count_italic = 0, count_underline = 0, count_color = 0;

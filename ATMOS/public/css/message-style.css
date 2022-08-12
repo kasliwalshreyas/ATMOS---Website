@@ -168,51 +168,7 @@ button:disabled {
     padding: 12px 24px 0 24px;
 }
 
-.heading h1 {
-    text-align: center;
-}
 
-.nav-bar-elements{
-    display: inline-block;
-    margin-left: 60px;
-}
-.profile{
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 2.5%;
-    margin-right: 20px;
-
-}
-a {
-    text-decoration: none;
-    color: black;
-}
-.profile:hover{
-    /* display: inline-block; */
-    float: right;
-    margin-right: 20px;
-
-}
-.nav-bar-elements-list{
-    list-style-type: none;
-}
-.nav-bar-elements-list li{
-    display: inline-block;
-    /* border-bottom: solid; */
-    margin-right: 20px;
-}
-.nav-bar-elements-list li:hover{
-    cursor:pointer;
-    display: inline-block;
-    border-bottom: solid;
-    margin-right: 20px;
-}
-/* .nav-bar-elements-list li:active{
-    display: inline-block;
-    border-bottom: solid;
-    margin-right: 20px;
-} */
 .column1 {
     padding-top: 20px;
     float: left;
