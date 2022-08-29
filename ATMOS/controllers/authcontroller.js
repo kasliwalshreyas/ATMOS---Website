@@ -24,78 +24,15 @@ const handleError = (err) => {
 }
 
 
-
-const maxAge = 3*24*60*60;
-const createToken = (id) => {
-    return jwt.sign({id}, 'ATMOS', {
-        expiresIn: maxAge
-    });
-}
-
-
-
-
-module.exports.register_get = (req,res) =>{
-    res.render('register');
-}
-
-
-module.exports.logout_get = (req,res) =>{
-    res.cookie('jwt', 'loggedout', {
-        maxAge: 1,
-        httpOnly: true
-    });
-    res.redirect('/login');
-}
-
-
-
-module.exports.register_post = async (req,res) =>{
-    console.log('hello signup');
-
-    console.log(req.body);
-
-    const data = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        password: req.body.password,
-        email: req.body.email,
-        phone: req.body.phone,
-    };
-
-    try{
-        const user = await User.create({...data});
-        const token = createToken(user._id);
-        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
-
-       
-        res.status(201).json({user: user._id});
+// Function to generate OTP
+function generateOTP() {
+    var digits = '0123456789';
+    let OTP = '';
+    for (let i = 0; i < 4; i++) {
+        OTP += digits[Math.floor(Math.random() * 10)];
     }
-    catch (err){
-        console.log(err);
-        res.status(400).json({err});
-    }
+    return OTP;
 }
-module.exports.login_get = (req,res) =>{
-    res.render('login');
-}
-module.exports.login_post = async (req,res) =>{
-    const {email, password} = req.body;
-
-    try{
-        const user = await User.login(email,password);
-        const token = createToken(user._id);
-        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
-        res.status(201).json({user: user._id});
-        
-    }
-    catch(err){
-        const errors = handleError(err);
-        res.status(400).json({errors});
-    }
-}
-
-
 
 
 var transporter = nodemailer.createTransport({
@@ -109,22 +46,6 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-// Hi Akash,
-
-// Your One Time Password (OTP) to sign up on CoinDCX is 084135. The OTP is valid for 30 minutes. For account safety, do not share your OTP with others.
-
-// Regards,
-// Team CoinDCX.
-
-// Function to generate OTP
-function generateOTP() {
-    var digits = '0123456789';
-    let OTP = '';
-    for (let i = 0; i < 4; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
-    }
-    return OTP;
-}
 
 // Sending OTP through mail for verification
 async function sendmail(email,name) {
@@ -157,78 +78,141 @@ async function sendmail(email,name) {
 
 }
 
-
-module.exports.send_the_mail = async (req,res) =>{
-
-    const {email, name} = req.body;
-    console.log(email, name);
-    await sendmail(email,name);
-}
-
-
-module.exports.check_the_otp = async (req,res) =>{
-    const {email,otp} = req.body;
-
-    const userOTP = await otpModel.findOne({email})
-    .then((result) => {
-        console.log(result);
-        if(result.otp === otp){
-            console.log('OTP Matched');
-            res.json({message: true});
-        }
-        else{
-            console.log('OTP Not Matched');
-            res.json({message: false});
-        }
-    });   
-
-}
-
-// Integrate Order API on server
-module.exports.create_the_order = async (req,res) =>{
-    console.log('Create OrderID request', req.body);
-    var options = {
-        amount: req.body.amount,  // amount in the smallest currency unit
-        currency: "INR",
-        receipt: "rcp1"
-      };
-      instance.orders.create(options, function(err, order) {
-        console.log(order);
-        res.json(order);
-      });
-}
 const storeItems = new Map([
     [1, { price: 100, name: "Basic" }],
     [2, { price: 6600, name: "Standard" }],
     [3, { price: 9900, name: "Enterprise" }],
 ])
 
-module.exports.create_the_checkout_session = async (req,res) =>{
-    console.log('Create Checkout Session request', req.body);
-    try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'payment',
-            line_items: req.body.items.map(item => {
-                const storeItem = storeItems.get(item.id)
-                return {
-                    price_data: {
-                        currency: 'inr',
-                        product_data: {
-                            name: storeItem.name
-                        },
-                        unit_amount: storeItem.price
-                    },
-                    quantity: item.quantity
-                }
-            }),
+const maxAge = 3*24*60*60;
+const createToken = (id) => {
+    return jwt.sign({id}, 'ATMOS', {
+        expiresIn: maxAge
+    });
+}
 
-            success_url: `${process.env.SERVER_URL}/home`,
-            cancel_url: `${process.env.SERVER_URL}/cancel`
-        })
-        console.log(session)
-        res.json({ url: session.url })
-    } catch (err) {
-        res.status(500).json({ error: err.message })
+class authController {
+    register_get = async (req, res) => {
+        res.render('register');
+    }
+    logout_get = async (req, res) => {
+        res.cookie('jwt', 'loggedout', {
+            maxAge: 1,
+            httpOnly: true
+        });
+        res.redirect('/login');
+    }
+    register_post = async (req, res) => {
+        console.log('hello signup');
+
+    console.log(req.body);
+
+    const data = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        password: req.body.password,
+        email: req.body.email,
+        phone: req.body.phone,
+    };
+
+    try{
+        const user = await User.create({...data});
+        const token = createToken(user._id);
+        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
+
+       
+        res.status(201).json({user: user._id});
+    }
+    catch (err){
+        console.log(err);
+        res.status(400).json({err});
+    }
+    }
+    login_get = async (req, res) => {
+        res.render('login');
+    }
+    login_post = async (req, res) => {
+        const {email, password} = req.body;
+
+    try{
+        const user = await User.login(email,password);
+        const token = createToken(user._id);
+        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge*1000});
+        res.status(201).json({user: user._id});
+        
+    }
+    catch(err){
+        const errors = handleError(err);
+        res.status(400).json({errors});
+    }
+    }
+    send_the_mail = async (req,res) =>{
+
+        const {email, name} = req.body;
+        console.log(email, name);
+        await sendmail(email,name);
+    }
+    check_the_otp = async (req,res) =>{
+        const {email,otp} = req.body;
+    
+        const userOTP = await otpModel.findOne({email})
+        .then((result) => {
+            console.log(result);
+            if(result.otp === otp){
+                console.log('OTP Matched');
+                res.json({message: true});
+            }
+            else{
+                console.log('OTP Not Matched');
+                res.json({message: false});
+            }
+        });   
+    
+    }
+    // Integrate Order API on server
+    create_the_order = async (req,res) =>{
+        console.log('Create OrderID request', req.body);
+        var options = {
+            amount: req.body.amount,  // amount in the smallest currency unit
+            currency: "INR",
+            receipt: "rcp1"
+          };
+          instance.orders.create(options, function(err, order) {
+            console.log(order);
+            res.json(order);
+          });
+    }
+
+    create_the_checkout_session = async (req,res) =>{
+        console.log('Create Checkout Session request', req.body);
+        try {
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                mode: 'payment',
+                line_items: req.body.items.map(item => {
+                    const storeItem = storeItems.get(item.id)
+                    return {
+                        price_data: {
+                            currency: 'inr',
+                            product_data: {
+                                name: storeItem.name
+                            },
+                            unit_amount: storeItem.price
+                        },
+                        quantity: item.quantity
+                    }
+                }),
+    
+                success_url: `${process.env.SERVER_URL}/home`,
+                cancel_url: `${process.env.SERVER_URL}/cancel`
+            })
+            console.log(session)
+            res.json({ url: session.url })
+        } catch (err) {
+            res.status(500).json({ error: err.message })
+        }
     }
 }
+
+
+module.exports = new authController();
