@@ -5,25 +5,13 @@
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-
-# CONTRIBUTOR
-### Akash Yadav (S20200010009)
-### Avinash Saroj (S20200010027)
-### Dushyant Yadav (S20200010059)
-### Naman Bhatia (S20200010140)
-### Shreyas Kasliwal (S20200010196)
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 
 # Idea Statement
 Our goal is to develop a web application where you and your team can easily manage projects by assigning tasks. The assignee can keep you informed of the progress and can also have private conversations with the admin and other team members.
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+
 
 # PAGES (12 pages)
 1. Homepage (contains features)
@@ -61,7 +49,10 @@ Our goal is to develop a web application where you and your team can easily mana
 3. Contact us page has the ability to send emails
 4. A chat interface for chatting among users
 
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
+# Get Started
 
 Prerequisite: Install Node
 
@@ -78,6 +69,18 @@ npm start
 DataBase Instructions:
 Install MongoDB Compass and enter the url 'mongodb+srv://sampleuser:1234@atmos-sample-database.r2brf.mongodb.net/ATMOS-sample-database?retryWrites=true&w=majority'
 
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+# CONTRIBUTOR
+### Akash Yadav (S20200010009)
+### Avinash Saroj (S20200010027)
+### Dushyant Yadav (S20200010059)
+### Naman Bhatia (S20200010140)
+### Shreyas Kasliwal (S20200010196)
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 # Work Distribution
 

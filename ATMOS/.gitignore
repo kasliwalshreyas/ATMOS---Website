@@ -2,3 +2,5 @@
 /.pnp
 .pnp.js
 contributions.md
+.env
+/node_modules

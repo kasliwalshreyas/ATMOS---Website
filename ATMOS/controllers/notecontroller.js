@@ -27,20 +27,22 @@
 //
 // }
 
+class noteController {
+  post_notes_data = async (req,res) => {
 
-module.exports.post_notes_data = async (req,res) => {
+    // const user = getUserDetails(req,res);
+    const noteNumber = req.params.noteID;
+    const title = req.body.title;
+    const desc = req.body.desc;
+  
+    const note = await Note.create({title,desc});
+  
+    res.json("/notes");
+  }
 
-  // const user = getUserDetails(req,res);
-  const noteNumber = req.params.noteID;
-  const title = req.body.title;
-  const desc = req.body.desc;
-
-  const note = await Note.create({title,desc});
-
-  res.json("/notes");
-
+  get_notes = (req,res) => {
+    res.render('notes-index');
+  }
 }
 
-module.exports.get_notes = (req,res) => {
-  res.render('notes-index');
-}
+module.exports = new noteController();

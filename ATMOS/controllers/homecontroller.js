@@ -26,37 +26,34 @@ async function getUserDetails (req,res){
     else{
         return 1;
     }
-    
-    
 }
-
-
 
 async function get_project_for_home(req,res){
-    
-    
-
-    
+ 
 }
 
-module.exports.get_home = async (req,res) => {
+class homeController {
+    get_home = async (req,res) => {
 
     
-    const user = await getUserDetails(req,res);
-    // console.log("this is user id: ");
-    // console.log(user);
-    
-    const allFavoriteProjects = Project.find({userId: user.id, favorite: true})
-            // .then(async (result2) => {
-            //         // for(let i=0;i<result2.sectionList.length;i++){
-            //         //     // let section = Section.findById({})
-            //         // }
-            // } )
-            .then((result) => {
-                console.log("List of favorite project");
-                console.log(result);
-                res.render("home-index", {user: user, projectList: result, taskList: []});
-                     
-            })
-            .catch((err) => {console.log(err)});
+        const user = await getUserDetails(req,res);
+        // console.log("this is user id: ");
+        // console.log(user);
+        
+        const allFavoriteProjects = Project.find({userId: user.id, favorite: true})
+                // .then(async (result2) => {
+                //         // for(let i=0;i<result2.sectionList.length;i++){
+                //         //     // let section = Section.findById({})
+                //         // }
+                // } )
+                .then((result) => {
+                    console.log("List of favorite project");
+                    console.log(result);
+                    res.render("home-index", {user: user, projectList: result, taskList: []});
+                         
+                })
+                .catch((err) => {console.log(err)});
+    }
 }
+
+module.exports = new homeController();
