@@ -12,7 +12,7 @@ const async = require('async');
 
 
 //models
-const Task = require('./models/tasks'); 
+const Task = require('./models/tasks');
 const Project = require('./models/projects');
 const User = require('./models/user');
 const Note = require("./models/notes");
@@ -25,7 +25,7 @@ const homeRoutes = require('./routes/homeroutes');
 const noteRoutes = require('./routes/notesroutes');
 const adminRoutes = require('./routes/adminroutes');
 //middlewares
-const {requireAuth, checkUser} = require('./middleware/authMiddleware');
+const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 
 
 
@@ -34,12 +34,12 @@ const app = express();
 const server = http.createServer(app)
 const io = socketio(server)
 const path = require('path')
-const {generateMessage} = require('./utils/messages.js')
+const { generateMessage } = require('./utils/messages.js')
 const Msg = require('./models/message')
 const Filter = require('bad-words')
 
 const dbURL = "mongodb+srv://sampleuser:1234@atmos-sample-database.r2brf.mongodb.net/ATMOS-sample-database?retryWrites=true&w=majority";
-mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result) => server.listen(3000, function () {
         console.log("Hi, Its ATMOS");
         console.log("connected to DB");
@@ -71,16 +71,16 @@ app.use(adminRoutes);
 app.set("view engine", "ejs");
 
 
-async function getUserDetails (req,res){
+async function getUserDetails(req, res) {
     let token = req.cookies.jwt;
-    
-    if(token) {
+
+    if (token) {
         const userDetails = await jwt.verify(token, 'ATMOS', async (err, decodedToken) => {
-            if(err){
+            if (err) {
                 console.log(err.message);
                 return 1;
             }
-            else{
+            else {
                 // console.log(decodedToken);
                 let user = await User.findById(decodedToken.id);
                 // console.log("from getUserDetails: ")
@@ -90,11 +90,11 @@ async function getUserDetails (req,res){
         })
         return userDetails;
     }
-    else{
+    else {
         return 1;
     }
-    
-    
+
+
 }
 
 
@@ -111,7 +111,7 @@ let projectListID = {}
 app.get("/messages", checkUser, async function (req, res) {
     res.render("message-index");
 
-    const user = await getUserDetails(req,res);
+    const user = await getUserDetails(req, res);
 
     username = user.firstname;
     projectListID = user.projectListID;
@@ -125,22 +125,22 @@ io.on('connection', (socket) => {
     })
     // let userName = user.firstname;
     // console.log(userName)
-    
-    socket.on('join',() => {
+
+    socket.on('join', () => {
         // socket.join(projectListID[i]);
         const msg = new Msg({
             user: username,
-            msg: 'Welcome to the chat app\n'+username+' has joined the chat room',
+            msg: 'Welcome to the chat app\n' + username + ' has joined the chat room',
             time: Date.now()
         })
         socket.emit('message', generateMessage(msg))
         // socket.broadcast.to(projectListID[i]).emit('message', generateMessage(`${username} has joined the chat`))
     })
     // for (let i = 0; i < projectListID.length; i++) {
-    socket.on('sendMessage', (message,callback) => {
+    socket.on('sendMessage', (message, callback) => {
         // console.log(data)
         const filter = new Filter()
-        if(filter.isProfane(message)){
+        if (filter.isProfane(message)) {
             return callback('Profanity is not allowed')
         }
         const msg = new Msg({
@@ -157,17 +157,17 @@ io.on('connection', (socket) => {
             console.log(err)
         })
 
-        
+
         // socket.emit('message', data) 
     })
-// }
+    // }
     socket.on('disconnect', () => {
         const msg = new Msg({
             user: username,
-            msg: username+' has left the chat',
+            msg: username + ' has left the chat',
             time: Date.now()
         })
-        io.emit('message',generateMessage(msg))
+        io.emit('message', generateMessage(msg))
     })
     socket.on('sendLocation', (data, callback) => {
         // io.emit('message', data.latitude)
@@ -192,36 +192,36 @@ io.on('connection', (socket) => {
 // });
 
 app.get("/admin", async function (req, res) {
-    let task 
-    let project 
+    let task
+    let project
     let user
-    async.series([function(callback){
-        Task.find({},function(err,tasks){
-            if(err) return callback(err);
+    async.series([function (callback) {
+        Task.find({}, function (err, tasks) {
+            if (err) return callback(err);
             task = tasks;
-            callback(null,tasks);
+            callback(null, tasks);
         })
-    },function(callback){
-        Project.find({},function(err,projects){
-            if(err) return callback(err);
+    }, function (callback) {
+        Project.find({}, function (err, projects) {
+            if (err) return callback(err);
             project = projects;
-            callback(null,projects);
+            callback(null, projects);
         })
-    },function(callback){
+    }, function (callback) {
         User.find({}, function (err, users) {
-            if(err) return callback(err);
+            if (err) return callback(err);
             user = users;
-            callback(null,users);
+            callback(null, users);
         })
-    }],function(err,results){
-        if(err) return callback(err);
-        res.render("admin-index",{task:task,project:project,user:user});
+    }], function (err, results) {
+        if (err) return callback(err);
+        res.render("admin-index", { task: task, project: project, user: user });
     });
 });
 
 
 app.get('/aboutus', function (req, res) {
-	res.render("aboutus-index");
+    res.render("aboutus-index");
 });
 app.get('/plans', (req, res) => {
     res.render('plans');
@@ -229,7 +229,7 @@ app.get('/plans', (req, res) => {
 
 
 app.get('/contact', function (req, res) {
-	res.render("contact-index");
+    res.render("contact-index");
 });
 
 
